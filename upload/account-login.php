@@ -66,9 +66,9 @@ begin_frame(T_("LOGIN"));
 	</table>
 <?php
 
-if ( ! empty($_REQUEST["returnto"]) )
+if (  is_string($_REQUEST["returnto"]) )
 { 
-      print("<input type=\"hidden\" name=\"returnto\" value=\"" . cleanstr($_REQUEST["returnto"]) . "\" />\n");
+      print("<input type=\"hidden\" name=\"returnto\" value=\"" . htmlspecialchars($_REQUEST["returnto"]) . "\" />\n");
 }
 ?>
 
