@@ -105,7 +105,12 @@ function autoclean() {
     do_cleanup();
 }
 
-// IP Validation
+/** 
+* This function checks whether the ip is in a valid range.
+* 
+* @param string $ip
+* @return bool
+*/
 function validip($ip) {
 	if (extension_loaded("filter")) {
 		return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE);
@@ -136,6 +141,10 @@ function validip($ip) {
 		return false;
 }
 
+/**
+* Get users IP address.
+* @return string 
+*/
 function getip() {
 	return $_SERVER["REMOTE_ADDR"];
 }
@@ -525,6 +534,10 @@ function deleteaccount($userid)
     SQL_Query_exec("DELETE FROM pollanswers WHERE userid = $userid");
 }
 
+/*
+* This function will return an array of torrent categories.
+* @return array
+*/
 function genrelist() {
     $ret = array();
     $res = SQL_Query_exec("SELECT id, name, parent_cat FROM categories ORDER BY parent_cat ASC, sort_index ASC");
@@ -533,6 +546,10 @@ function genrelist() {
     return $ret;
 }
 
+/*
+* This function will return an array of torrent languages.
+* @return array
+*/
 function langlist() {
     $ret = array();
     $res = SQL_Query_exec("SELECT id, name, image FROM torrentlang ORDER BY sort_index, id");
@@ -541,6 +558,11 @@ function langlist() {
     return $ret;
 }
 
+/*
+*This function checks whether the given param is a valid integer.
+*@param mixed
+*@return bool
+*/
 function is_valid_id($id){
 	return is_numeric($id) && ($id > 0) && (floor($id) == $id);
 }
