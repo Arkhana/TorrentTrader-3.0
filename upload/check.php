@@ -119,6 +119,12 @@ This system check is designed for unix based servers, windows based servers may 
 </tr>
 
 <tr>
+        <td>&nbsp; - mbstring extension</td>
+        <td><?php echo extension_loaded( 'mbstring' ) ? '<b><font color="green">Available</font></b>' : '<b><font color="#ff0000">Unavailable</font></b>'; ?></td>
+       
+</tr>
+
+<tr>
 	<td>backend/config.php</td>
 	<td>
 	<?php
