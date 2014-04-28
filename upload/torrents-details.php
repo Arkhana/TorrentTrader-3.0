@@ -93,6 +93,7 @@ if ($_GET["takecomment"] == 'yes'){
 //START OF PAGE LAYOUT HERE
 $char1 = 50; //cut length
 $shortname = CutName(htmlspecialchars($row["name"]), $char1);
+
 print ("<font size='3' color='#CC0000'><b>" . $shortname . "</b></a></font><br />");
 print ("<b>" .T_("SEEDERS"). " : <font color='green'>" . number_format($row["seeders"]) . "</font> - ".T_("LEECHERS").": <font color='#ff0000'>" .  number_format($row["leechers"]) . "</font></b><br />");
 print ("<b>".T_("LAST_CHECKED").": </b>" . date("d-M-Y H:i:s", utc_to_tz_time($row["last_action"])) . "");
@@ -195,16 +196,22 @@ if ($row["banned"] == "yes"){
     else
         print("<div style='margin-top:3px'><font color='#0080FF'><b>Bookmark</b></font>: <a href='bookmarks.php?torrent=$row[id]'><b>Add this torrent</b></a> to <a href='bookmark.php'><b>Your Bookmarks</b></a></div>");
     //===| End Bookmarks
-echo "<div align='right'><a href='report.php?torrent=$id'><img src=\"".$site_config["SITEURL"]."/images/reporter.png\" border=\"0\" alt='' /></a>&nbsp;";
+echo "<div align='right'><a href='report.php?torrent=$id'><button type='button' class='btn btn-large btn-danger'>Report</button></a>&nbsp;";
 if ($owned)
-	echo "<a href='torrents-edit.php?id=$row[id]&amp;returnto=" . urlencode($_SERVER["REQUEST_URI"]) . "'><img src=\"".$site_config["SITEURL"]."/images/editer.png\" border=\"0\" alt='' /></a>&nbsp;";
+	echo "<a href='torrents-edit.php?id=$row[id]&amp;returnto=" . urlencode($_SERVER["REQUEST_URI"]) . "'><button type='button' class='btn btn-large btn-warning'>Edit</button></a>&nbsp;";
 echo "</div><br />";
 print ("<font size=2><b>" .T_("Uploaded By"). " :</b> <a href='account-details.php?id=" . $row["owner"] . "'>".$row["username"]."</a></font><br />");
 
 		print ("<b>" .T_("COMPLETED"). " : <font color='#2E2EFE'>" . number_format($row["times_completed"]) . "</font></br>" .T_("TOTAL_SIZE"). " : " . mksize($row["size"]) . "</br>" .T_("VIEWS"). " : " . number_format($row["views"]) . "</br>" .T_("HITS"). " : " . number_format($row["hits"]) . "</b></center><br />");
-   
+   if ($row["external"] == 'yes'){
+    print ("<a href=\"magnet:?xt=urn:btih:".$row["info_hash"]."&dn=".$row["filename"]."&tr=udp://tracker.openbittorrent.com&tr=udp://tracker.publicbt.com\"><button type='button' class='btn btn-large btn-primary'>Magnet Download</button></a>");
+    }else{
+    print ("<a href=\"magnet:?xt=urn:btih:".$row["info_hash"]."&dn=".$row["filename"]."&tr=".$site_config[TSITEURL]."../announce/?passkey=".$CURUSER["passkey"]."\"><button type='button' class='btn btn-large btn-primary'>Magnet Download</button></a>");
+    }
 	
-	print ("<a href=\"download.php?id=$id&amp;name=" . rawurlencode($row["filename"]) . "\"><button type='button' class='btn btn-large btn-danger'>DOWNLOAD TORRENT</button></a><a href=\"download.php?id=$id&amp;name=" . rawurlencode($row["filename"]) . "\"><button type='button' class='btn btn-large btn-danger'>MAGNET TORRENT</button></a><br />");
+	print ("<a href=\"../download/?id=$id&amp;name=" . rawurlencode($row["filename"]) . "\"><button type='button' class='btn btn-large btn-danger'>DOWNLOAD TORRENT</button></a>
+	
+	<a href=\"../download/?id=$id&amp;name=" . rawurlencode($row["filename"]) . "\"></a><br />");
 		
 if (empty($row["lang_name"])) $row["lang_name"] = "Unknown/NA";
 if (isset($row["lang_image"]) && $row["lang_image"] != "")
