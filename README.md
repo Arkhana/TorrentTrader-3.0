@@ -47,7 +47,7 @@ if you have any of those folders missing (eg: uploads/images/), please create th
 6) Run check.php from your browser to check you have configured everything ok
    check.php is designed for UNIX systems, if you are using WINDOWS it may not report the paths correctly.
 
-7) Now register as a new user on the site.  The first user registered will become administrator
+7) Default Login User: Admin password: password  change password with in profile area and you can change user name from with in phpmyadmin
 
 8) If check.php still exists, please remove it or rename.
 A warning will display on the site index until its removed
