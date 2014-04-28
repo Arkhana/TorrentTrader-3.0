@@ -22,7 +22,7 @@
 <!--[if lte IE 6]>
     <script type="text/javascript" src="<?php echo $site_config["SITEURL"]; ?>/themes/default/js/pngfix/supersleight-min.js"></script>
 <![endif]-->
-
+<script src="http://code.jquery.com/jquery-2.1.0.min.js" type="text/javascript"></script>
 </head>
 <?php
 	$page = $_SERVER['REQUEST_URI'];
@@ -44,14 +44,7 @@
             print("<a class='admincp' href=".$site_config["SITEURL"]."/admincp.php>AdminCP</a> ");
     
         }
-        if ($CURUSER["class"]=="6") {
-
-print("<a class='modocp' href=".$site_config["SITEURL"]."/modocp.php>SuperModCP ");
-} 
-if ($CURUSER["class"]=="5") {
-
-print("<a class='modcp' href=".$site_config["SITEURL"]."/modcp.php>ModeratorCP ");
-}
+       
     ?>
     </div>
     <div class="fltRight">
@@ -88,11 +81,11 @@ $slots = number_format($maxslot) . "/" . number_format($query_slots[0]);
     
     if ($unreadmail){
     
-        print("<a class='mail_n' href=".$site_config["SITEURL"]."../message/?inbox><img src='../images/mails.png' border='none' height='20' width='20' alt='New PM' title='($unreadmail) New PM'S'><font color='red'>($unreadmail)</font><embed src='mail.wav' autostart='true' width='0' height='0' hidden='true'></a>&nbsp;&nbsp;");
+        print("<embed src='../mail.mp3' autostart='true' width='0' height='0' hidden='true'><a class='mail_n' href=".$site_config["SITEURL"]."/message/?inbox><img src='../images/mails.png' border='none' height='20' width='20' alt='New PM' title='($unreadmail) New PM'S'><font color='red'>($unreadmail)</font><p></a>&nbsp;&nbsp;");
     
     }else{
     
-        print("<a class='mail' href=".$site_config["SITEURL"]."../message/><img src='../images/mail.png' border='none' height='20' width='20' alt='My Messages' title='My Messages'></a>&nbsp;");
+        print("<a class='mail' href=".$site_config["SITEURL"]."/message/><img src='../images/mail.png' border='none' height='20' width='20' alt='My Messages' title='My Messages'></a>&nbsp;");
     
     }
     
