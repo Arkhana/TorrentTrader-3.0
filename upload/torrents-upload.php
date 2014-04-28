@@ -26,17 +26,20 @@ if ($_POST["takeupload"] == "yes") {
 	require_once("backend/parse.php");
 
     // Check form data.
-    if ( ! isset($_POST['type'], $_POST['name'], $_FILES['torrent']) )
+    if ( ! isset($_POST['type'], $_POST['name']) )
           $message = T_('MISSING_FORM_DATA'); 
     
-    if (($num = $_FILES['torrent']['error']))
-         show_error_msg(T_('ERROR'), T_("UPLOAD_ERR[$num]"), 1);
+    $tupload = new Upload( 'torrent' );
+    
+    if ( ( $num = $tupload -> getError() ) )
+    {
+         show_error_msg(T_("UPLOAD"), T_("UPLOAD_ERR[$num]"), 1);
+    }
 
-	$f = $_FILES["torrent"];
-	$fname = $f["name"];
-
-	if (empty($fname))
-		$message = T_("EMPTY_FILENAME");
+    if ( ! ( $fname = $tupload -> getName() ) )
+    {
+         $message = T_("EMPTY_FILENAME");
+    }
 
     $nfo = 'no';
         
@@ -89,8 +92,6 @@ if ($_POST["takeupload"] == "yes") {
 	if (!empty($_POST["name"]))
 		$name = $_POST["name"];
         
-    $tmpname = $f['tmp_name'];
-
 	//end check form data
 
 	if (!$message) {
@@ -98,9 +99,8 @@ if ($_POST["takeupload"] == "yes") {
 	$torrent_dir = $site_config["torrent_dir"];	
 	$nfo_dir = $site_config["nfo_dir"];	
 
-	//if(!copy($f, "$torrent_dir/$fname"))
-	if(!move_uploaded_file($tmpname, "$torrent_dir/$fname"))
-		show_error_msg(T_("ERROR"), T_("ERROR"). ": " . T_("UPLOAD_COULD_NOT_BE_COPIED")." $tmpname - $torrent_dir - $fname",1);
+        if ( ! ( $tupload -> move( "$torrent_dir/$fname" ) ) )
+		show_error_msg(T_("ERROR"), T_("ERROR"). ": " . T_("UPLOAD_COULD_NOT_BE_COPIED")." $torrent_dir - $fname",1);
 
     $TorrentInfo = array();
     $TorrentInfo = ParseTorrent("$torrent_dir/$fname");
@@ -140,7 +140,7 @@ if ($_POST["takeupload"] == "yes") {
 		$message = T_("UPLOAD_NO_TRACKER_ANNOUNCE");
 	}
 	if ($message) {
-		@unlink("$torrent_dir/$fname");
+		@$tupload -> remove();
 		@unlink($tmpname);
 		@unlink("$nfo_dir/$nfofilename");
 		show_error_msg(T_("UPLOAD_FAILED"), $message,1);
