@@ -12,7 +12,16 @@
        
        private function __construct()
        {
-           $this -> bbcode = bbcode_create( $this -> getTags() );
+           if ( function_exists( 'bbcode_create' ) )
+           {
+                $this -> bbcode = bbcode_create( $this -> getTags() );
+                
+                $this -> initSmilies();
+                
+                return;
+           }
+           
+           show_error_msg( 'Error', 'BBCode not available, you need to run `pecl install bbcode-1.0.3b1`', 1 );
        }
        
        static function getInstance()
@@ -31,6 +40,10 @@
    
               'u' => array( 'type' => BBCODE_TYPE_NOARG, 'open_tag' => '<u>', 'close_tag' => '</u>' )
            );
+       }
+       
+       private function initSmilies()
+       {
        }
        
        public function parse( $str )
