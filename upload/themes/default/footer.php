@@ -76,6 +76,7 @@ while ($row = mysql_fetch_array ($result)) {
 	$totaluploaded      = $row["totalul"]; 
 }
 $localpeers = $leechers+$seeders;
+
 // Members OnLine - Mod by L3oncoder
 begin_frame("Stats");
 $monli = "SELECT * FROM mostonline";
@@ -93,7 +94,7 @@ $file = "".$site_config["cache_dir"]."/cache_usersonlineblock.txt";
 $expire = 10; // time in seconds
 $guests = number_format(getguests());
 $members = number_format(get_row_count("users", "WHERE UNIX_TIMESTAMP('" . get_date_time() . "') - UNIX_TIMESTAMP(users.last_access) < 900"));
-echo "<B> " . $guests . "</b> Guests - <B> " . $members . "</b> Members<br>";
+echo "<b> " . $guests . "</b> Guests - <b> " . $members . "</b> Members<br>";
 $a = @mysql_fetch_assoc(@mysql_query("SELECT id,username FROM users WHERE status='confirmed' ORDER BY id DESC LIMIT 1"));
 if ($CURUSER)
 $latestuser = "<a href=../user/?id=" . $a["id"] . ">" . $a["username"] . "</a>";
@@ -205,8 +206,9 @@ if ($warned) {
 }
 $usersactivetoday++;
 		 }
-	 echo "<div align='left'>" . $todayactive . "</div>";
-echo "<BR>";
+
+echo "<div align='left'>" . $todayactive . "</div>";
+echo "<br />";
 end_frame();
 }
 if ($site_config['DISCLAIMERON']){
@@ -221,10 +223,10 @@ if ($site_config['DISCLAIMERON']){
         // *************************************************************************************************************************************
         //			PLEASE DO NOT REMOVE THE POWERED BY LINE, SHOW SOME SUPPORT! WE WILL NOT SUPPORT ANYONE WHO HAS THIS LINE EDITED OR REMOVED!
         // *************************************************************************************************************************************
-        print ("<CENTER>Powered by <a href=\"http://www.torrenttrader.org\" target=\"_blank\">TorrentTrader v".$site_config["ttversion"]."</a> - ");
+        print ("<center>Powered by <a href=\"http://www.torrenttrader.org\" target=\"_blank\">TorrentTrader v".$site_config["ttversion"]."</a> - ");
         $totaltime = array_sum(explode(" ", microtime())) - $GLOBALS['tstart'];
         printf("Page generated in %f", $totaltime);
-        print (" - Theme By: <a href=\"http://nikkbu.info\" target=\"_blank\">Nikkbu</a> & <a href=\"https://www.facebook.com/l3oncod3r\" target=\"_blank\">leoncoder</a></CENTER>");
+        print (" - Theme By: <a href=\"http://nikkbu.info\" target=\"_blank\">Nikkbu</a> & <a href=\"https://www.facebook.com/l3oncod3r\" target=\"_blank\">leoncoder</a></center>");
         //
         // *************************************************************************************************************************************
         //			PLEASE DO NOT REMOVE THE POWERED BY LINE, SHOW SOME SUPPORT! WE WILL NOT SUPPORT ANYONE WHO HAS THIS LINE EDITED OR REMOVED!
