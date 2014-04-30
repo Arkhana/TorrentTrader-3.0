@@ -38,12 +38,27 @@
               
               'b' => array( 'type' => BBCODE_TYPE_NOARG, 'open_tag' => '<b>', 'close_tag' => '</b>' ),
    
-              'u' => array( 'type' => BBCODE_TYPE_NOARG, 'open_tag' => '<u>', 'close_tag' => '</u>' )
+              'u' => array( 'type' => BBCODE_TYPE_NOARG, 'open_tag' => '<u>', 'close_tag' => '</u>' ),
+              
+              'quote' => array( 'type' => BBCODE_TYPE_NOARG, 'open_tag' => '<quote><h4>Source: {PARAM}</h4>', 'close_tag' => '</quote> '),
+              
+              'center' => array( 'type' => BBCODE_TYPE_NOARG, 'open_tag' => '<div style="text-align:center;">', 'close_tag' => '</div>'),
+          
+              'strike' => array( 'type' => BBCODE_TYPE_NOARG, 'open_tag' => '<span style="text-decoration:line-through;">', 'close_tag' => '</span>'),
+            
+              'color' => array( 'type' => BBCODE_TYPE_ARG, 'open_tag' => '<span style="color:{PARAM}">', 'close_tag' => '</span>')
+    
            );
+           
+           /*[quote="[b]Test[/b]"]test1, test2[/quote]
+           [color=navy]Navy Text[/color]
+           [color='red\'']Red Text[/color]
+           [color="green\""]Green Text[/color]
+           [color=&quot;blue\&quot;Test&quot;]Blue Text[/color]*/
        }
        
        private function initSmilies()
-       {
+       { 
        }
        
        public function parse( $str )
