@@ -32,7 +32,8 @@ if (($user["enabled"] == "no" || ($user["status"] == "pending")) && $CURUSER["ed
 $blocked = SQL_Query_exec("SELECT id FROM blocked WHERE userid=$user[id] AND blockid=$CURUSER[id]");
 $show = mysql_num_rows($blocked);
 if ($show != 0 && $CURUSER["control_panel"] != "yes")
-    show_error_msg("Error", "<div style='margin-top:10px; margin-bottom:10px' align='center'><font size=2 color=#FF2000><b>Vous êtes bloqué par ce membre et vous ne pouvez pas voir son profil!</b></font></div>", 1);
+    show_error_msg("Error", "<div style='margin-top:10px; margin-bottom:10px' align='center'><font size=2 color=#FF2000><b>
+You are blocked by this member and you can not view their profile!</b></font></div>", 1);
 //===| End Blocked Users
 //get all vars first
 
@@ -197,14 +198,14 @@ if ($_GET["takecomment"] == 'yes'){
 }     
  echo "<div class='hiddenframe' id='MyWall'>";  
 begin_frame(T_("COMMENTS"));
-   //echo "<p align=center><a class=index href=torrents-comment.php?id=$id>" .T_("ADDCOMMENT"). "</a></p>\n";
+   //echo "<p align=center><a class=index href=../torrents-comment.php?id=$id>" .T_("ADDCOMMENT"). "</a></p>\n";
 
    $subres = SQL_Query_exec("SELECT COUNT(*) FROM comments WHERE userprofile = $id");
    $subrow = mysql_fetch_array($subres);
    $commcount = $subrow[0];
    
    if ($commcount) {
-     list($pagertop, $pagerbottom, $limit) = pager(10, $commcount, "account-details.php?id=$user[id]&amp;");
+     list($pagertop, $pagerbottom, $limit) = pager(10, $commcount, "../user/?id=$user[id]&amp;");
      $commquery = "SELECT comments.id, text, user, comments.added, avatar, signature, username, title, class, uploaded, downloaded, privacy, donated FROM comments LEFT JOIN users ON comments.user = users.id WHERE userprofile = $id ORDER BY comments.id $limit";
      $commres = SQL_Query_exec($commquery);
    }else{
@@ -223,7 +224,7 @@ begin_frame(T_("COMMENTS"));
 
    if ($CURUSER) {
      echo "<center>";
-     echo "<form name=\"comment\" method=\"post\" action=\"account-details.php?id=$user[id]&amp;takecomment=yes\">";
+     echo "<form name=\"comment\" method=\"post\" action=\"../user/?id=$user[id]&amp;takecomment=yes\">";
      echo textbbcode("comment","body")."<br />";
      echo "<input type=\"submit\"  value=\"".T_("ADDCOMMENT")."\" />";
      echo "</form></center>";
@@ -272,7 +273,7 @@ echo "<div class='hiddenframe' id='uploadedtor'>";
 
 	//get sql info
 	if ($count) {
-		list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, "account-details.php?id=$id&amp;");
+		list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, "../user/?id=$id&amp;");
 		$query = "SELECT torrents.id, torrents.category, torrents.leechers, torrents.nfo, torrents.seeders, torrents.name, torrents.times_completed, torrents.size, torrents.added, torrents.comments, torrents.numfiles, torrents.filename, torrents.owner, torrents.external, torrents.freeleech, categories.name AS cat_name, categories.parent_cat AS cat_parent, categories.image AS cat_pic, users.username, users.privacy, torrents.anon, IF(torrents.numratings < 2, NULL, ROUND(torrents.ratingsum / torrents.numratings, 1)) AS rating, torrents.announce FROM torrents LEFT JOIN categories ON category = categories.id LEFT JOIN users ON torrents.owner = users.id WHERE owner = $id $orderby $limit";
 		$res = SQL_Query_exec($query);
 	}else{
@@ -302,10 +303,10 @@ if (get_user_class() >= 7) // add you staff class
     $bookmarkuser = mysql_num_rows($r);
 
     if ($bookmarkuser)
-        print("<a target='blank' href='watchedusers.php?action=delete&type=bookmarkuser&targetid=$id'><center><font style='margin-left:7px'><input type='submit' value='Remove ".$user["username"]." from your Personal Watchlist' class='btn btn-large btn-warning'/></font></center></a>\n");
+        print("<a target='blank' href='/watch/?action=delete&type=bookmarkuser&targetid=$id'><center><font style='margin-left:7px'><input type='submit' value='Remove ".$user["username"]." from your Personal Watchlist' class='btn btn-large btn-warning'/></font></center></a>\n");
     else
     {
-        print("<a target='blank' href='watchedusers.php?action=add&type=bookmarkuser&targetid=$id'><center><font style='margin-left:7px'><input type='submit' value='Add ".$user["username"]." to your Personal Watchlist' class='btn btn-large btn-danger'/></font></center></a>&nbsp;<br />");
+        print("<a target='blank' href='/watch/?action=add&type=bookmarkuser&targetid=$id'><center><font style='margin-left:7px'><input type='submit' value='Add ".$user["username"]." to your Personal Watchlist' class='btn btn-large btn-danger'/></font></center></a>&nbsp;<br />");
         }
         }
 	$avatar = htmlspecialchars($user["avatar"]);
@@ -391,7 +392,7 @@ if($CURUSER["edit_users"]=="yes"){
 
 			$addeddate = substr($arr['added'], 0, strpos($arr['added'], " "));
 			$expirydate = substr($arr['expiry'], 0, strpos($arr['expiry'], " "));
-			print("<tr><td class='table_col1' align='center'>$addeddate</td><td class='table_col2' align='center'>$expirydate</td><td class='table_col1'>".format_comment($arr['reason'])."</td><td class='table_col2' align='center'><a href='account-details.php?id=".$arr2['id']."'>".$wusername."</a></td><td class='table_col1' align='center'>".$arr['type']."</td></tr>\n");
+			print("<tr><td class='table_col1' align='center'>$addeddate</td><td class='table_col2' align='center'>$expirydate</td><td class='table_col1'>".format_comment($arr['reason'])."</td><td class='table_col2' align='center'><a href='../user/?id=".$arr2['id']."'>".$wusername."</a></td><td class='table_col1' align='center'>".$arr['type']."</td></tr>\n");
 		 }
 
 		echo "</table>\n";
@@ -406,7 +407,7 @@ if($CURUSER["edit_users"]=="yes"){
 	echo "<br /><br /><center><table border='0'><tr><td align='right'><b>".T_("REASON").":</b> </td><td align='left'><textarea cols='40' rows='5' name='reason'></textarea></td></tr>";
 	echo "<tr><td align='right'><b>".T_("EXPIRE").":</b> </td><td align='left'><input type='text' size='4' name='expiry' />(days)</td></tr>";
 	echo "<tr><td align='right'><b>".T_("TYPE").":</b> </td><td align='left'><input type='text' size='10' name='type' /></td></tr>";
-	echo "<tr><td colspan='2' align='center'><input type='submit' value='".T_("ADD_WARNING")."' /></td></tr></table></center></form>";
+	echo "<tr><td colspan='2' align='center'><input type='submit' value='Add Warning' class='btn btn-large btn-warning'/></td></tr></table></center></form>";
 
 	if($CURUSER["delete_users"] == "yes"){
 		print("<hr /><center><form method='post' action='admin-modtasks.php'>\n");
@@ -414,7 +415,7 @@ if($CURUSER["edit_users"]=="yes"){
 		print("<input type='hidden' name='userid' value='$id' />\n");
 		print("<input type='hidden' name='username' value='".$user["username"]."' />\n");
 		echo "<b>".T_("REASON").":</b><input type='text' size='30' name='delreason' />";
-		echo "&nbsp;<input type='submit' value='".T_("DELETE_ACCOUNT")."' /></form></center>";
+		echo "&nbsp;<input type='submit' value='Delete Account' class='btn btn-large btn-danger'/></form></center>";
 	}
 
 	end_frame();
@@ -431,34 +432,34 @@ stdfoot();
 		{
 		case 1:
 		hideAll();
-		  $('#localactiv').slideToggle(1000);
+		  $('#localactiv').slideToggle(500);
 		  break;
 		case 2:
 		hideAll();
-		  $('#uploadedtor').slideToggle(1000);
+		  $('#uploadedtor').slideToggle(500);
 		  break;
 		case 3:
 		hideAll();
-		  $('#staffonlyinfo').slideToggle(1000);
+		  $('#staffonlyinfo').slideToggle(500);
 		  break;
 		case 4:
 		hideAll();
-		  $('#banwarnings').slideToggle(1000);
+		  $('#banwarnings').slideToggle(500);
 		  break;
 		  case 5:
 		hideAll();
-		  $('#MyWall').slideToggle(1000);
+		  $('#MyWall').slideToggle(500);
 		  break;
 		}
 	}
 
 	function hideAll()
 	{
-		$('#localactiv').slideUp(500);
-		$('#uploadedtor').slideUp(500);
-		$('#staffonlyinfo').slideUp(500);
-		$('#banwarnings').slideUp(500);
-		$('#Mywall').slideUp(500);
+		$('#localactiv').slideUp(250);
+		$('#uploadedtor').slideUp(250);
+		$('#staffonlyinfo').slideUp(250);
+		$('#banwarnings').slideUp(250);
+		$('#Mywall').slideUp(250);
 	}
 
 </script>
