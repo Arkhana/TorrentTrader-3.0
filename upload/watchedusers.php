@@ -1,6 +1,6 @@
 <?php
 #================================#
-#      TorrentTrader 2.08      #
+#      TorrentTrader unofficial 3.0.0 BETA      #
 #  http://www.torrenttrader.org  #
 #--------------------------------#
 #      Modified by EZEL      #
@@ -48,7 +48,7 @@ loggedinonly();
             show_error_msg("Error", "User ID $targetid is already in your $table_is list.", 1);
        
         SQL_Query_exec("INSERT INTO $table_is VALUES (0,$userid, $targetid)");
-        header("Location: ".$site_config['SITEURL']."/watchedusers.php?id=$userid#$frag");
+        header("Location: ".$site_config['SITEURL']."/watch/?id=$userid#$frag");
         die;
     }
 
@@ -64,7 +64,7 @@ loggedinonly();
             show_error_msg("Error", "Invalid ID $userid.", 1);
        
         if (!$sure)
-            show_error_msg("Delete $type", "<div style='margin-top:10px; margin-bottom:10px' align='center'>Do you really want to delete this $typ? &nbsp; \n"."<a href=?id=$userid&action=delete&type=$type&targetid=$targetid&sure=1>Yes</a> | <a href=watchedusers.php>No</a></div>", 1);
+            show_error_msg("Delete $type", "<div style='margin-top:10px; margin-bottom:10px' align='center'>Do you really want to delete this $typ? &nbsp; \n"."<a href=?id=$userid&action=delete&type=$type&targetid=$targetid&sure=1>Yes</a> | <a href=/watch/>No</a></div>", 1);
        
         if ($type == 'bookmarkuser') {
             SQL_Query_exec("DELETE FROM bookmarkuser WHERE userid=$userid AND bkid=$targetid");
@@ -74,7 +74,7 @@ loggedinonly();
         } else
             show_error_msg("Error", "Unknown type $type", 1);
        
-        header("Location: ".$site_config['SITEURL']."/watchedusers.php?id=$userid#$frag");
+        header("Location: ".$site_config['SITEURL']."/watch/?id=$userid#$frag");
         die;
     }
 
@@ -109,11 +109,11 @@ loggedinonly();
            
 
         echo "<tr>
-            <td class='table_col1' align='center'><a href='account-details.php?id=".$bookmarkuser['id']."'><b>".class_user($bookmarkuser['name'])."</b></a></td>
+            <td class='table_col1' align='center'><a href='../user/?id=".$bookmarkuser['id']."'><b>".class_user($bookmarkuser['name'])."</b></a></td>
             <td class='table_col2' align='center'>$banned</td>
-            <td class='table_col1' align='center'><a href='mailbox.php?compose&amp;id=".$bookmarkuser['id']."'><img src='images/button_pm.gif' title='Send&nbsp;PM'></a></td>
+            <td class='table_col1' align='center'><a href='../message/?compose&amp;id=".$bookmarkuser['id']."'><img src='../images/button_pm.gif' title='Send&nbsp;PM'></a></td>
             <td class='table_col2' align='center'><div style='margin-top:10px; margin-bottom:2px'>Last seen: ".date("<\\b>d.M.Y<\\/\\b> H:i", utc_to_tz_time($bookmarkuser['last_access']))."</div>[<b>".get_elapsed_time(sql_timestamp_to_unix_timestamp($bookmarkuser[last_access]))." ago</b>]</td>
-            <td class='table_col1' align='center'><b><a href='watchedusers.php?id=$userid&action=delete&type=bookmarkuser&targetid=".$bookmarkuser['id']."'><font style='margin-left:7px'><input type='submit' title='Remove' value='Remove'></font></a></b></td>
+            <td class='table_col1' align='center'><b><a href='../watch/?id=$userid&action=delete&type=bookmarkuser&targetid=".$bookmarkuser['id']."'><font style='margin-left:7px'><input type='submit' value='Remove' class='btn btn-success'/></font></a></b></td>
         </tr>";
             }
             }
